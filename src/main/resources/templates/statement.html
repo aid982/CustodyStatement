@@ -1,0 +1,369 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+<head>
+<title>View All</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<h3>DRGN Limited</h3>
+		P.O. Box 3175, Road Town, Tortola, British Virgin Islands
+		<h1>Statement of the Investment Account</h1>
+		Account #
+		<th th:text="${account}" /> For period:
+		<th th:text="${date1}" />
+		<th th:text="${date2}" />
+
+		<h3>I. ACCOUNT BALANCE (SECURITIES)</h3>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Securities Code</th>
+					<th>Opening Balance</th>
+					<th>In</th>
+					<th>Out</th>
+					<th>Closing Balance</th>
+					<th>Expected In</th>
+					<th>Expected Out</th>
+					<th>Expected Closing Balance</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="secMovement : ${statement.securityMovements}">
+					<td th:text="${secMovement.name}"></td>
+					<td th:text="${secMovement.qtyBegRem}"></td>
+					<td th:text="${secMovement.qtyPlus}"></td>
+					<td th:text="${secMovement.qtyMinus}"></td>
+					<td th:text="${secMovement.qtyEndRem}"></td>
+					<td th:text="${secMovement.qtyPlanPlus}"></td>
+					<td th:text="${secMovement.qtyPlanMinus}"></td>
+					<td th:text="${secMovement.qtyEndRem}+${secMovement.qtyPlanMinus}"></td>
+
+				</tr>
+			</tbody>
+		</table>
+
+		<h3>II. ACCOUNT BALANCE (FUNDS)</h3>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Currency</th>
+					<th>Trade #</th>
+					<th>Comments</th>
+					<th>Settlement Date</th>
+					<th>Opening Balance</th>
+					<th>In</th>
+					<th>Out</th>
+					<th>Closing Balance</th>
+					<th>Expected In</th>
+					<th>Expected Out</th>
+					<th>Expected Closing Balance</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="moneyMovement : ${statement.moneyMovements}">
+					<td
+						th:text="${moneyMovement.totals}? |Total ${moneyMovement.currency}| : ${moneyMovement.currency}"
+						th:class="${moneyMovement.totals}? 'bold' : ''"></td>
+					<td th:text="${moneyMovement.trade}"></td>
+					<td th:text="${moneyMovement.comments}"></td>
+					<td th:text="${moneyMovement.stlDate}"></td>
+					<td th:text="${moneyMovement.open}"
+						th:class="${moneyMovement.totals}? 'bold' : ''"></td>
+					<td th:text="${moneyMovement.in}"
+						th:class="${moneyMovement.totals}? 'bold' : ''"></td>
+					<td th:text="${moneyMovement.out}"
+						th:class="${moneyMovement.totals}? 'bold' : ''"></td>
+					<td th:text="${moneyMovement.close}"
+						th:class="${moneyMovement.totals}? 'bold' : ''"></td>
+					<td th:text="${moneyMovement.expectedIn}"
+						th:class="${moneyMovement.totals}? 'bold' : ''"></td>
+					<td th:text="${moneyMovement.expectedOut}"
+						th:class="${moneyMovement.totals}? 'bold' : ''"></td>
+					<td th:text="${moneyMovement.expectedClose}"
+						th:class="${moneyMovement.totals}? 'bold' : ''"></td>
+
+				</tr>
+			</tbody>
+		</table>
+
+		<h3>III. TRADES</h3>
+		Equity trades:
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Trade #</th>
+					<th>Buy/ Sell</th>
+					<th>Security</th>
+					<th>CCY</th>
+					<th>Quantity</th>
+					<th>Price</th>
+					<th>Gross Consideration</th>
+					<th>Trasaction charges</th>
+					<th>Net consideration</th>
+					<th>Settlement CCY</th>
+					<th>FX rate</th>
+					<th>Settlement consideration</th>
+					<th>Settlement Date</th>
+					<th>Comments</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="trades : ${statement.equityTrades}">
+					<td th:text="${trades.date}"></td>
+					<td th:text="${trades.trade}"></td>
+					<td th:text="${trades.buysell}"></td>
+					<td th:text="${trades.security}"></td>
+					<td th:text="${trades.ccy}"></td>
+					<td th:text="${trades.qty}"></td>
+					<td th:text="${trades.price}"></td>
+					<td th:text="${trades.gross}"></td>
+					<td th:text="${trades.charges}"></td>
+					<td th:text="${trades.net}"></td>
+					<td th:text="${trades.stl_ccy}"></td>
+					<td th:text="${trades.fx}"></td>
+					<td th:text="${trades.stlAmount}"></td>
+					<td th:text="${trades.stl_date}"></td>
+					<td th:text="${trades.comments}"></td>
+
+
+				</tr>
+			</tbody>
+		</table>
+		Fixed income trades:
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Trade #</th>
+					<th>Buy/ Sell</th>
+					<th>Security</th>
+					<th>CCY</th>
+					<th>Quantity</th>
+					<th>Clean Price %</th>
+					<th>Principal amount</th>
+					<th>Accrued Coupon</th>
+					<th>Transaction charges</th>
+					<th>Total consideration</th>
+					<th>Settlement CCY</th>
+					<th>Settlement consideration</th>
+					<th>FX rate</th>
+					<th>Settlement Date</th>
+					<th>Comments</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="trades : ${statement.fixedIncomeTrades}">
+					<td th:text="${trades.date}"></td>
+					<td th:text="${trades.trade}"></td>
+					<td th:text="${trades.buysell}"></td>
+					<td th:text="${trades.security}"></td>
+					<td th:text="${trades.ccy}"></td>
+					<td th:text="${trades.qty}"></td>
+					<td th:text="${trades.price}"></td>
+					<td th:text="${trades.principal}"></td>
+					<td th:text="${trades.accrued}"></td>
+					<td th:text="${trades.charges}"></td>
+					<td th:text="${trades.totalConsideration}"></td>
+					<td th:text="${trades.stl_ccy}"></td>
+					<td th:text="${trades.stlAmount}"></td>					
+					<td th:text="${trades.fx}"></td>					
+					<td th:text="${trades.stl_date}"></td>
+					<td th:text="${trades.comments}"></td>
+
+
+				</tr>
+			</tbody>
+		</table>
+		
+		<h3>IV. TRADES IN PROCESS</h3>
+			<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Trade #</th>
+					<th>Buy/ Sell</th>
+					<th>Security</th>
+					<th>CCY</th>
+					<th>Quantity</th>
+					<th>Settlement amount</th>
+					<th>Settlement Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="trades : ${statement.tradesInProcess}">
+					<td th:text="${trades.date}"></td>
+					<td th:text="${trades.trade}"></td>
+					<td th:text="${trades.buysell}"></td>
+					<td th:text="${trades.security}"></td>
+					<td th:text="${trades.ccy}"></td>
+					<td th:text="${trades.qty}"></td>
+					<td th:text="${trades.stlAmount}"></td>
+					<td th:text="${trades.stl_date}"></td>					
+
+
+				</tr>
+			</tbody>
+		</table>
+									
+		
+		<h3>V. FOREIGN CURRENCY EXCHANGE TRANSACTIONS</h3>														
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Trade #</th>
+					<th>Initial amount</th>
+					<th>Initial CCY</th>
+					<th>FX rate</th>
+					<th>Payment amount</th>
+					<th>Payment  CCY</th>
+					<th>Value date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="fx : ${statement.fx}">
+					<td th:text="${fx.date}"></td>
+					<td th:text="${fx.trade}"></td>
+					<td th:text="${fx.initAmount}"></td>
+					<td th:text="${fx.initCCY}"></td>
+					<td th:text="${fx.fxRate}"></td>
+					<td th:text="${fx.finalAmount}"></td>
+					<td th:text="${fx.finalCCY}"></td>
+					<td th:text="${fx.stlDate}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<h3>VI. FOREIGN CURRENCY EXCHANGE TRANSACTIONS IN PROCESS</h3>																																																																		
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Trade #</th>
+					<th>Initial amount</th>
+					<th>Initial CCY</th>
+					<th>FX rate</th>
+					<th>Payment amount</th>
+					<th>Payment  CCY</th>
+					<th>Value date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="fx : ${statement.fxInProcess}">
+					<td th:text="${fx.date}"></td>
+					<td th:text="${fx.trade}"></td>
+					<td th:text="${fx.initAmount}"></td>
+					<td th:text="${fx.initCCY}"></td>
+					<td th:text="${fx.fxRate}"></td>
+					<td th:text="${fx.finalAmount}"></td>
+					<td th:text="${fx.finalCCY}"></td>
+					<td th:text="${fx.stlDate}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<h3>VII. DEPOSITS/LOANS</h3>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Deposits/Loans</th>
+					<th>Currency</th>
+					<th>Date opening</th>
+					<th>Date closing</th>
+					<th>Rate,%</th>
+					<th>Interest</th>
+					<th>Principal</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="depo : ${statement.deposits}">
+					<td th:text="${depo.deposit}"></td>
+					<td th:text="${depo.ccy}"></td>
+					<td th:text="${depo.date1}"></td>
+					<td th:text="${depo.date2}"></td>
+					<td th:text="${depo.rate}"></td>
+					<td th:text="${depo.interest}"></td>
+					<td th:text="${depo.principal}"></td>
+					<td th:text="${depo.total}"></td>
+					
+				</tr>
+			</tbody>
+		</table>
+		<h3>VIII. ACCOUNT VALUE</h3>
+		Valuation of fixed income holdings							
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Securities Code</th>
+					<th>Securities Name</th>
+					<th>Type</th>
+					<th>ISIN</th>
+					<th>Quantity</th>
+					<th>Listing CCY</th>
+					<th>Clean price %</th>
+					<th>Accrued interest</th>
+					<th>Total value of Holdings, listing</th>
+					<th>Total value of Holdings, $</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="bonds : ${statement.accountValueBonds}">
+					<td th:text="${bonds.securityCode}"></td>
+					<td th:text="${bonds.securityName}"></td>
+					<td th:text="${bonds.type}"></td>
+					<td th:text="${bonds.isin}"></td>
+					<td th:text="${bonds.qty}"></td>
+					<td th:text="${bonds.listingCCY}"></td>
+					<td th:text="${bonds.price}"></td>
+					<td th:text="${bonds.accrued}"></td>
+					<td th:text="${bonds.totalValueListing}"></td>
+					<td th:text="${bonds.totalValueUSD}"></td>					
+
+				</tr>
+			</tbody>
+		</table>
+		<p th:text="'Total value of fixed income holdings (USD): ' +${statement.SumOfBondsValue}" th:class='bold' ></p>
+		Valuation of equity holdings
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Securities Code</th>
+					<th>Securities Name</th>
+					<th>Type</th>
+					<th>ISIN</th>
+					<th>Quantity</th>
+					<th>Listing CCY</th>
+					<th>Current market price</th>
+					<th>Total value of Holdings, listing</th>
+					<th>Total value of Holdings, $</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="bonds : ${statement.accountValue}">
+					<td th:text="${bonds.securityCode}"></td>
+					<td th:text="${bonds.securityName}"></td>
+					<td th:text="${bonds.type}"></td>
+					<td th:text="${bonds.isin}"></td>
+					<td th:text="${bonds.qty}"></td>
+					<td th:text="${bonds.listingCCY}"></td>
+					<td th:text="${bonds.price}"></td>
+					<td th:text="${bonds.totalValueListing}"></td>
+					<td th:text="${bonds.totalValueUSD}"></td>
+				</tr>				
+			</tbody>
+			
+		</table>
+		<p th:text="'Total value of equity holdings (USD): ' +${statement.SumOfEquityValue}" th:class='bold' ></p>		
+
+
+
+
+
+	</div>
+
+
+</body>
+</html>

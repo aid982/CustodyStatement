@@ -1,0 +1,62 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+<head>
+<title>View All</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<form method="POST" th:action="@{/}" th:object="${user}">
+			<div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
+				<p th:each="error : ${#fields.errors('*')}" th:text="${error}">
+					Validation error</p>
+			</div>
+			<table>
+				<tr>
+					<td>login:</td>
+					<td><input type="text" name="login" required="true"
+						readonly="true" th:field="*{login}" /></td>
+				</tr>
+				<tr>
+					<td>name:</td>
+					<td><input type="text" name="name" required="true"
+						th:field="*{name}" /></td>
+				</tr>
+				<tr>
+					<td>E-mail:</td>
+					<td><input type="email" name="email" required="true"
+						th:field="*{email}" /></td>
+				</tr>
+
+
+				<tr>
+					<td>Password expire date</td>
+					<td><input type="date" name="passwordExpireDate"
+						th:field="*{passwordExpireDate}" readonly="true" /></td>
+				</tr>
+
+				<tr>
+					<td>Investment accounts:</td>
+					<td>
+						<div th:each="accounts, stat : *{accounts}">
+							<input type="text" th:field="*{accounts[__${stat.index}__].id}"
+								readonly="true" />
+						</div>
+
+					</td>
+				</tr>
+				<tr>
+					<td><a th:href="@{'/user/'+${user.id}+'/pswdChange'}">Change password</a></td>
+				</tr>
+				<tr>
+
+					<td></td>
+					<td><input type="submit" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+
+</body>
+</html>

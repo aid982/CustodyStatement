@@ -1,0 +1,46 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout">
+<head>
+<title>View All</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<form method="POST" th:action="@{/}" th:object="${query}">
+			<div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
+				<p th:each="error : ${#fields.errors('*')}" th:text="${error}">
+					Validation error</p>
+			</div>			
+			<table>
+				<tr>
+					<td>Date from:</td>
+					<td><input type="date" name="date1" required="true"
+						th:field="*{date1}" /></td>
+				</tr>
+				<tr>
+					<td>Date to:</td>
+					<td><input type="date" name="date2" required="true"
+						th:field="*{date2}" /></td>
+				</tr>
+
+				<tr>
+					<td>Investment account:</td>
+					<td><select th:field="*{account}" required="true"	>
+							<option th:each="acc : *{accounts}"  th:value="${acc.id}" th:text="${acc.id}" ></option>
+						</select>
+					</td>
+
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="submit" /></td>
+
+
+				</tr>
+			</table>
+		</form>
+	</div>
+
+
+</body>
+</html>
